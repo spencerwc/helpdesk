@@ -29,14 +29,14 @@ p > a {
 nav {
     @apply pb-4
     border-b-2 border-gray-200
-    flex items-center gap-5 
-    my-5 mx-auto 
+    flex items-center gap-10 
+    mb-5 mx-auto 
     max-w-5xl;
 }
 
 nav a,
 nav span {
-    @apply text-gray-500;
+    @apply text-gray-500 text-base;
 }
 
 nav a:hover {
