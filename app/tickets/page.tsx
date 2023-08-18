@@ -1,7 +1,15 @@
+import TicketsList from './TicketsList';
+
 export default function Tickets() {
     return (
         <main>
-            <h2>Tickets</h2>
+            <div>
+                <h2>Tickets</h2>
+                <p>
+                    <small>Currently open tickets:</small>
+                </p>
+            </div>
+            <TicketsList />
         </main>
     );
 }
