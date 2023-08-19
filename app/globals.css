@@ -49,7 +49,7 @@ main nav {
 
 /* Button styles */
 button {
-    @apply px-3 py-2 
+    @apply px-4 py-2 
     rounded-sm 
     flex justify-between items-center gap-2
     text-sm;
@@ -60,12 +60,12 @@ button:hover {
 }
 
 .btn-primary {
-    @apply bg-gradient-to-r from-primary-400 to-primary-500 text-white;
+    @apply bg-primary-500 text-white;
 }
 
 .btn-primary,
 .btn-primary:enabled {
-    @apply hover:to-primary-600;
+    @apply hover:bg-primary-400;
 }
 
 .btn-secondary {
@@ -75,7 +75,7 @@ button:hover {
 /* Form styles */
 form {
     @apply py-4 px-7 
-    bg-primary-200 
+    bg-primary-100 
     rounded-md 
     block 
     mx-auto 
