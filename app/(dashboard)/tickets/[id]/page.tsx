@@ -1,6 +1,14 @@
 import { getTicketById, getTickets } from '../utils';
 import { notFound } from 'next/navigation';
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+    const ticket = await getTicketById(params.id);
+
+    return {
+        title: `Helpdesk - ${ticket?.title}`,
+    };
+}
+
 export async function generateStaticParams() {
     const tickets = await getTickets();
 
