@@ -33,6 +33,7 @@ export default function AuthForm({ handleSubmit }: AuthFormProps) {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </label>
+            <button className="btn-primary">Submit</button>
         </form>
     );
 }
