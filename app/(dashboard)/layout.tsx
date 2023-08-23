@@ -13,13 +13,8 @@ export default async function DashboardLayout({
 
     return (
         <>
-            <Navbar />
+            <Navbar user={user} />
             {children}
-            {user && (
-                <footer className="text-center text-sm">
-                    Logged in as {user.email}
-                </footer>
-            )}
         </>
     );
 }
