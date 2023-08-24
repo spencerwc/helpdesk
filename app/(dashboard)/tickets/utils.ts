@@ -1,9 +1,17 @@
-interface Ticket {
+import { type PostgrestError } from '@supabase/supabase-js';
+
+export interface Ticket {
     body: string;
+    createdAt?: string;
     id?: string;
     priority: string;
     title: string;
-    user_email: string;
+    user_email?: string;
+}
+
+export interface TicketJsonResponse {
+    data: Ticket;
+    error: PostgrestError | null;
 }
 
 export async function getTickets() {
@@ -30,14 +38,4 @@ export async function getTicketById(id: string) {
 
     const ticket: Promise<Ticket> = res.json();
     return ticket;
-}
-
-export async function addTicket(ticket: Ticket) {
-    const res = await fetch(`http://localhost:4000/tickets`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...ticket, id: crypto.randomUUID() }),
-    });
-
-    return res;
 }

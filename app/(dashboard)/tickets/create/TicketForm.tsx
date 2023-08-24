@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { addTicket } from '../utils';
+import { type TicketJsonResponse } from '../utils';
 
 export default function TicketForm() {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [priority, setPriority] = useState('low');
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const priorityOptions = ['low', 'medium', 'high'];
     const router = useRouter();
 
@@ -20,16 +21,24 @@ export default function TicketForm() {
             body,
             priority,
             title,
-            user_email: 'temp@email.dev',
         };
 
-        const res = await addTicket(ticket);
+        const res = await fetch(`http://localhost:3000/api/tickets`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(ticket),
+        });
 
-        if (res.status === 201) {
+        const json: TicketJsonResponse = await res.json();
+
+        if (json.error) {
+            setError(json.error.message);
+            setIsLoading(false);
+        }
+
+        if (json.data) {
             router.refresh();
             router.push('/tickets');
-        } else {
-            setIsLoading(false);
         }
     };
 
@@ -74,6 +83,7 @@ export default function TicketForm() {
                     <span>Create ticket</span>
                 )}
             </button>
+            {error && <div className="error">{error}</div>}
         </form>
     );
 }
