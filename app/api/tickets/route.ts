@@ -2,8 +2,6 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse, type NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 
-export const dynamic = 'force-dynamic';
-
 interface Ticket {
     body: string;
     createdAt?: string;
