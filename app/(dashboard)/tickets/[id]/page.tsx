@@ -1,20 +1,36 @@
-import { getTicketById, getTickets } from '../utils';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
+import { Ticket } from '../utils';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-    const ticket = await getTicketById(params.id);
+    const supabase = createServerComponentClient({ cookies });
+
+    const { data: ticket }: { data: Ticket | null } = await supabase
+        .from('tickets')
+        .select()
+        .eq('id', params.id)
+        .single();
 
     return {
-        title: `Helpdesk - ${ticket?.title}`,
+        title: `Helpdesk - ${ticket?.title || 'Ticket not found'}`,
     };
 }
 
-export async function generateStaticParams() {
-    const tickets = await getTickets();
+async function getTicketById(id: string) {
+    const supabase = createServerComponentClient({ cookies });
 
-    return tickets.map((ticket) => ({
-        id: ticket.id,
-    }));
+    const { data }: { data: Ticket | null } = await supabase
+        .from('tickets')
+        .select()
+        .eq('id', id)
+        .single();
+
+    if (!data) {
+        notFound();
+    }
+
+    return data;
 }
 
 export default async function TicketDetails({
@@ -23,10 +39,6 @@ export default async function TicketDetails({
     params: { id: string };
 }) {
     const ticket = await getTicketById(params.id);
-
-    if (!ticket) {
-        notFound();
-    }
 
     return (
         <main>
