@@ -1,12 +1,26 @@
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { type Ticket } from './utils';
 import Link from 'next/link';
-import { getTickets } from './utils';
+
+async function getTickets(): Promise<Ticket[] | null> {
+    const supabase = createServerComponentClient({ cookies });
+
+    const { data, error } = await supabase.from('tickets').select();
+
+    if (error) {
+        console.log(error.message);
+    }
+
+    return data;
+}
 
 export default async function TicketsList() {
     const tickets = await getTickets();
 
     return (
         <>
-            {tickets.map((ticket) => (
+            {tickets?.map((ticket) => (
                 <Link href={`/tickets/${ticket.id}`}>
                     <div key={ticket.id} className="card my-5">
                         <h3>{ticket.title}</h3>
@@ -17,7 +31,7 @@ export default async function TicketsList() {
                     </div>
                 </Link>
             ))}
-            {tickets.length === 0 && (
+            {tickets?.length === 0 && (
                 <p className="text-center">There are no open tickets.</p>
             )}
         </>
